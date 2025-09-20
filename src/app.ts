@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
-import { ProductRoutes } from "./app/modules/Product/product.route";
+import { ProductRoutes } from "./app/modules/user/user.route";
 import { OrderRoutes } from "./app/modules/Order/order.route";
 import globalErrorHandler from "./app/middleware/globalErrorHandler";
 import notFound from "./app/middleware/notFound";
@@ -17,7 +17,7 @@ app.use("/api/orders", OrderRoutes);
 
 // Root route
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to the Book Store API!");
+  res.send("Welcome to the Banana university Server!");
 });
 
 // Global Error Handler and Not Found Middleware

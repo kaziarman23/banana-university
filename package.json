@@ -34,7 +34,8 @@
     "express": "^5.1.0",
     "http-status": "^2.1.0",
     "mongodb": "^6.19.0",
-    "mongoose": "^8.18.1"
+    "mongoose": "^8.18.1",
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

@@ -1,25 +1,29 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "./user.model";
 import { UserService } from "./user.service";
+import httpStatus from "http-status";
+import sendResponse from "../../Utility/sendResponse";
 
-const getAllUsers = async (req: Request, res: Response) => {
+const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await User.find();
-    res.status(200).json({
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
       message: "Users retrieved successfully",
       data: users,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch users",
-      error: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getSingleUser = async (req: Request, res: Response) => {
+const getSingleUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { userId } = req.params;
     // const user = await User.findById(userId);
@@ -32,41 +36,39 @@ const getSingleUser = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
-      message: "User retrieved successfully",
+      message: "Users retrieved successfully",
       data: user,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch user",
-      error: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const createStudent = async (req: Request, res: Response) => {
+const createStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { password, student: studentData } = req.body;
 
     const result = await UserService.createStudentIntoBD(password, studentData);
 
-    res.status(201).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
       message: "Student is created successfully",
       data: result,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to create user",
-      error: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.body; // or from params, depending on how you designed it
     const updateData = req.body;
@@ -81,21 +83,18 @@ const updateUser = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
       message: "User updated successfully",
       data: updatedUser,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to update user",
-      error: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.params;
     // const deletedUser = await User.findByIdAndDelete(userId);
@@ -108,17 +107,14 @@ const deleteUser = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
       message: "User deleted successfully",
       data: deletedUser,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete user",
-      error: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 

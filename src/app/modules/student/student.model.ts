@@ -75,11 +75,6 @@ const studentSchema = new Schema<TStudent>(
       ref: "User",
       unique: true,
     },
-    password: {
-      type: String,
-      required: [true, "password is required"],
-      maxLength: [20, "password can not be more then 20 characters"],
-    },
     name: userNameSchema,
     gender: ["male", "female"],
     dateOfBirth: { type: String },

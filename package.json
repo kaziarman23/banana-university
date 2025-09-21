@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/kaziarman23/banana-university#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
@@ -38,6 +39,7 @@
     "zod": "^4.1.9"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/http-status": "^0.2.30",

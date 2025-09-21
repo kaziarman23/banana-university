@@ -1,9 +1,9 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
-import { ProductRoutes } from "./app/modules/user/user.route";
-import { OrderRoutes } from "./app/modules/Order/order.route";
 import globalErrorHandler from "./app/middleware/globalErrorHandler";
 import notFound from "./app/middleware/notFound";
+import { StudentRoutes } from "./app/modules/student/student.route";
+import { UserRoutes } from "./app/modules/user/user.route";
 
 const app: Application = express();
 
@@ -12,8 +12,8 @@ app.use(express.json());
 app.use(cors());
 
 // Application routes
-app.use("/api/products", ProductRoutes);
-app.use("/api/orders", OrderRoutes);
+app.use("/api/v1/students", StudentRoutes);
+app.use("/api/v1/users", UserRoutes);
 
 // Root route
 app.get("/", (req: Request, res: Response) => {

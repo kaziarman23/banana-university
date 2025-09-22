@@ -1,5 +1,7 @@
 import express from "express";
 import { userController } from "./user.controller";
+import validateRequest from "../../middleware/validateRequest";
+import { createStudentValidationSchema } from "../student/student.validation";
 
 const router = express.Router();
 
@@ -8,7 +10,11 @@ router.get("/", userController.getAllUsers);
 router.get("/:userId", userController.getSingleUser);
 
 // post route
-router.post("/create-user", userController.createStudent);
+router.post(
+  "/create-student",
+  validateRequest(createStudentValidationSchema),
+  userController.createStudent
+);
 
 // patch route
 router.patch("/update-user", userController.updateUser);

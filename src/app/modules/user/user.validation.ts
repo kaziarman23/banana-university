@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 const userValidationSchema = z.object({
-  password: z
+  pasword: z
     .string()
-    .max(20, { error: "Password must be no longer then 20 characters" })
+    .max(20, { message: "Password can not be more than 20 characters" })
     .optional(),
 });
 
-export const userValidation = {
+export const UserValidation = {
   userValidationSchema,
 };

@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const user_controller_1 = require("./user.controller");
+const validateRequest_1 = __importDefault(require("../../middleware/validateRequest"));
+const student_validation_1 = require("../student/student.validation");
+const router = express_1.default.Router();
+// get route
+router.get("/", user_controller_1.userController.getAllUsers);
+router.get("/:userId", user_controller_1.userController.getSingleUser);
+// post route
+router.post("/create-student", (0, validateRequest_1.default)(student_validation_1.createStudentValidationSchema), user_controller_1.userController.createStudent);
+// patch route
+router.patch("/update-user", user_controller_1.userController.updateUser);
+// delete route
+router.delete("/:userId", user_controller_1.userController.deleteUser);
+exports.UserRoutes = router;

@@ -1,25 +1,14 @@
-import express from "express";
-import { userController } from "./user.controller";
-import validateRequest from "../../middleware/validateRequest";
-import { createStudentValidationSchema } from "../student/student.validation";
+import express from 'express';
+import { createStudentValidationSchema } from './../student/student.validation';
+import { UserControllers } from './user.controller';
+import validateRequest from '../../middleware/validateRequest';
 
 const router = express.Router();
 
-// get route
-router.get("/", userController.getAllUsers);
-router.get("/:userId", userController.getSingleUser);
-
-// post route
 router.post(
-  "/create-student",
+  '/create-student',
   validateRequest(createStudentValidationSchema),
-  userController.createStudent
+  UserControllers.createStudent,
 );
-
-// patch route
-router.patch("/update-user", userController.updateUser);
-
-// delete route
-router.delete("/:userId", userController.deleteUser);
 
 export const UserRoutes = router;

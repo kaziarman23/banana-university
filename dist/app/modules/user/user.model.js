@@ -13,17 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = require("mongoose");
 const configs_1 = __importDefault(require("../../configs"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const userSchema = new mongoose_1.Schema({
     id: {
         type: String,
-        require: true,
+        required: true,
+        unique: true,
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     needsPasswordChange: {
         type: Boolean,
@@ -31,33 +32,32 @@ const userSchema = new mongoose_1.Schema({
     },
     role: {
         type: String,
-        enum: {
-            values: ["admin", "student", "faculty"],
-        },
+        enum: ['student', 'faculty', 'admin'],
     },
     status: {
         type: String,
-        enum: {
-            values: ["in-process", "blocked"],
-        },
-        default: "in-process",
+        enum: ['in-progress', 'blocked'],
+        default: 'in-progress',
     },
-    isDeleted: { type: Boolean, default: false },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
 }, {
     timestamps: true,
 });
-// pre save middleware/ hook : will work on create() save()
-userSchema.pre("save", function (next) {
+userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        // console.log(this, ' pre hook : we will save data');
-        const user = this;
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const user = this; // doc
+        // hashing password and save into DB
         user.password = yield bcrypt_1.default.hash(user.password, Number(configs_1.default.bcrypt_salt_rounds));
         next();
     });
 });
-// post save middleware / hook
-userSchema.post("save", function (doc, next) {
-    doc.password = "";
+// set '' after saving password
+userSchema.post('save', function (doc, next) {
+    doc.password = '';
     next();
 });
-exports.User = (0, mongoose_1.model)("User", userSchema);
+exports.User = (0, mongoose_1.model)('User', userSchema);

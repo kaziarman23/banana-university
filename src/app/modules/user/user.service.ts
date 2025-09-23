@@ -1,12 +1,13 @@
+import httpStatus from "http-status";
 import mongoose from "mongoose";
-import configs from "../../configs";
 import AppError from "../../errors/AppError";
-import { AcademicSemester } from "../academicSemester/academicSemester.model";
 import { TStudent } from "../student/student.interface";
 import { Student } from "../student/student.model";
+import { AcademicSemester } from "./../academicSemester/academicSemester.model";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { generateStudentId } from "./user.utils";
+import configs from "../../configs";
 
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
   // create a user object
@@ -64,6 +65,6 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
   }
 };
 
-export const UserService = {
+export const UserServices = {
   createStudentIntoDB,
 };

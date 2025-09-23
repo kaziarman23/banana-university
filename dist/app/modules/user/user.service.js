@@ -16,7 +16,7 @@ exports.UserService = void 0;
 const configs_1 = __importDefault(require("../../configs"));
 const student_model_1 = require("../student/student.model");
 const user_model_1 = require("./user.model");
-const createStudentIntoBD = (password, studentData) => __awaiter(void 0, void 0, void 0, function* () {
+const createStudentIntoDB = (password, studentData) => __awaiter(void 0, void 0, void 0, function* () {
     // creating a new obj
     const userData = {};
     // setting default password if password is not given
@@ -37,5 +37,5 @@ const createStudentIntoBD = (password, studentData) => __awaiter(void 0, void 0,
     }
 });
 exports.UserService = {
-    createStudentIntoBD,
+    createStudentIntoDB,
 };

@@ -1,8 +1,8 @@
 import { User } from "./user.model";
 import { UserService } from "./user.service";
 import httpStatus from "http-status";
-import sendResponse from "../../Utility/sendResponse";
-import catchAsync from "../../Utility/catchAsync";
+import sendResponse from "../../utility/sendResponse";
+import catchAsync from "../../utility/catchAsync";
 
 const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
@@ -38,7 +38,7 @@ const getSingleUser = catchAsync(async (req, res, next) => {
 const createStudent = catchAsync(async (req, res, next) => {
   const { password, student: studentData } = req.body;
 
-  const result = await UserService.createStudentIntoBD(password, studentData);
+  const result = await UserService.createStudentIntoDB(password, studentData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
 import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
 import { StudentServices } from './student.service';
-import catchAsync from '../../utility/catchAsync';
-import sendResponse from '../../utility/sendResponse';
 
 const getSingleStudent = catchAsync(async (req, res) => {
   const { studentId } = req.params;
@@ -17,7 +17,7 @@ const getSingleStudent = catchAsync(async (req, res) => {
 });
 
 const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
-  const result = await StudentServices.getAllStudentsFromDB();
+  const result = await StudentServices.getAllStudentsFromDB(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

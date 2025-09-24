@@ -1,17 +1,17 @@
-import httpStatus from 'http-status';
-import { AcademicSemesterServices } from './academicSemester.service';
-import catchAsync from '../../utility/catchAsync';
-import sendResponse from '../../utility/sendResponse';
+import httpStatus from "http-status";
+import { AcademicSemesterServices } from "./academicSemester.service";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
 
 const createAcademicSemester = catchAsync(async (req, res) => {
   const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
-    req.body,
+    req.body
   );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic semester is created succesfully',
+    message: "Academic semester is created succesfully",
     data: result,
   });
 });
@@ -22,20 +22,21 @@ const getAllAcademicSemesters = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic semesters are retrieved successfully',
+    message: "Academic semesters are retrieved successfully",
     data: result,
   });
 });
 
 const getSingleAcademicSemester = catchAsync(async (req, res) => {
   const { semesterId } = req.params;
-  const result =
-    await AcademicSemesterServices.getSingleAcademicSemesterFromDB(semesterId);
+  const result = await AcademicSemesterServices.getSingleAcademicSemesterFromDB(
+    semesterId
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic semester is retrieved succesfully',
+    message: "Academic semester is retrieved succesfully",
     data: result,
   });
 });
@@ -44,13 +45,13 @@ const updateAcademicSemester = catchAsync(async (req, res) => {
   const { semesterId } = req.params;
   const result = await AcademicSemesterServices.updateAcademicSemesterIntoDB(
     semesterId,
-    req.body,
+    req.body
   );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic semester is retrieved succesfully',
+    message: "Academic semester is retrieved succesfully",
     data: result,
   });
 });

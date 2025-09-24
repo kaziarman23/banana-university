@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status";
 import mongoose from "mongoose";
+import configs from "../../configs";
 import AppError from "../../errors/AppError";
 import { TStudent } from "../student/student.interface";
 import { Student } from "../student/student.model";
@@ -7,7 +9,6 @@ import { AcademicSemester } from "./../academicSemester/academicSemester.model";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { generateStudentId } from "./user.utils";
-import configs from "../../configs";
 
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
   // create a user object
@@ -25,7 +26,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
   );
 
   if (!admissionSemester) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Admission semester not found");
+    throw new AppError(httpStatus.BAD_REQUEST, "Admission Semester Not Found!");
   }
 
   const session = await mongoose.startSession();
@@ -58,10 +59,10 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     await session.endSession();
 
     return newStudent;
-  } catch (err) {
+  } catch (err: any) {
     await session.abortTransaction();
     await session.endSession();
-    throw new Error("Failed to create student");
+    throw new Error(err);
   }
 };
 

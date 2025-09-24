@@ -15,14 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AcademicSemesterControllers = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const academicSemester_service_1 = require("./academicSemester.service");
-const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
-const sendResponse_1 = __importDefault(require("../../utility/sendResponse"));
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const createAcademicSemester = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield academicSemester_service_1.AcademicSemesterServices.createAcademicSemesterIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Academic semester is created succesfully',
+        message: "Academic semester is created succesfully",
         data: result,
     });
 }));
@@ -31,7 +31,7 @@ const getAllAcademicSemesters = (0, catchAsync_1.default)((req, res) => __awaite
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Academic semesters are retrieved successfully',
+        message: "Academic semesters are retrieved successfully",
         data: result,
     });
 }));
@@ -41,7 +41,7 @@ const getSingleAcademicSemester = (0, catchAsync_1.default)((req, res) => __awai
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Academic semester is retrieved succesfully',
+        message: "Academic semester is retrieved succesfully",
         data: result,
     });
 }));
@@ -51,7 +51,7 @@ const updateAcademicSemester = (0, catchAsync_1.default)((req, res) => __awaiter
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Academic semester is retrieved succesfully',
+        message: "Academic semester is retrieved succesfully",
         data: result,
     });
 }));

@@ -26,27 +26,134 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentServices = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
+const student_constant_1 = require("./student.constant");
 const student_model_1 = require("./student.model");
-const getAllStudentsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield student_model_1.Student.find()
-        .populate("admissionSemester")
-        .populate({
-        path: "academicDepartment",
+const getAllStudentsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    /*
+    const queryObj = { ...query }; // copying req.query object so that we can mutate the copy object
+     
+    let searchTerm = '';   // SET DEFAULT VALUE
+  
+    // IF searchTerm  IS GIVEN SET IT
+    if (query?.searchTerm) {
+      searchTerm = query?.searchTerm as string;
+    }
+  
+    
+   // HOW OUR FORMAT SHOULD BE FOR PARTIAL MATCH  :
+    { email: { $regex : query.searchTerm , $options: i}}
+    { presentAddress: { $regex : query.searchTerm , $options: i}}
+    { 'name.firstName': { $regex : query.searchTerm , $options: i}}
+  
+    
+    // WE ARE DYNAMICALLY DOING IT USING LOOP
+     const searchQuery = Student.find({
+       $or: studentSearchableFields.map((field) => ({
+         [field]: { $regex: searchTerm, $options: 'i' },
+      })),
+     });
+  
+    
+     // FILTERING fUNCTIONALITY:
+    
+    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+     excludeFields.forEach((el) => delete queryObj[el]);  // DELETING THE FIELDS SO THAT IT CAN'T MATCH OR FILTER EXACTLY
+  
+    const filterQuery = searchQuery
+      .find(queryObj)
+      .populate('admissionSemester')
+      .populate({
+        path: 'academicDepartment',
         populate: {
-            path: "academicFaculty",
+          path: 'academicFaculty',
         },
-    });
+      });
+  
+   
+    // SORTING FUNCTIONALITY:
+    
+    let sort = '-createdAt'; // SET DEFAULT VALUE
+   
+   // IF sort  IS GIVEN SET IT
+    
+     if (query.sort) {
+      sort = query.sort as string;
+    }
+  
+     const sortQuery = filterQuery.sort(sort);
+  
+  
+     // PAGINATION FUNCTIONALITY:
+  
+     let page = 1; // SET DEFAULT VALUE FOR PAGE
+     let limit = 1; // SET DEFAULT VALUE FOR LIMIT
+     let skip = 0; // SET DEFAULT VALUE FOR SKIP
+  
+  
+    // IF limit IS GIVEN SET IT
+    
+    if (query.limit) {
+      limit = Number(query.limit);
+    }
+  
+    // IF page IS GIVEN SET IT
+  
+    if (query.page) {
+      page = Number(query.page);
+      skip = (page - 1) * limit;
+    }
+  
+    const paginateQuery = sortQuery.skip(skip);
+  
+    const limitQuery = paginateQuery.limit(limit);
+  
+    
+    
+    // FIELDS LIMITING FUNCTIONALITY:
+  
+    // HOW OUR FORMAT SHOULD BE FOR PARTIAL MATCH
+  
+    fields: 'name,email'; // WE ARE ACCEPTING FROM REQUEST
+    fields: 'name email'; // HOW IT SHOULD BE
+  
+    let fields = '-__v'; // SET DEFAULT VALUE
+  
+    if (query.fields) {
+      fields = (query.fields as string).split(',').join(' ');
+  
+    }
+  
+    const fieldQuery = await limitQuery.select(fields);
+  
+    return fieldQuery;
+  
+    */
+    const studentQuery = new QueryBuilder_1.default(student_model_1.Student.find()
+        .populate('admissionSemester')
+        .populate({
+        path: 'academicDepartment',
+        populate: {
+            path: 'academicFaculty',
+        },
+    }), query)
+        .search(student_constant_1.studentSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+    const result = yield studentQuery.modelQuery;
     return result;
 });
 const getSingleStudentFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield student_model_1.Student.findOne({ id })
-        .populate("admissionSemester")
+        .populate('admissionSemester')
         .populate({
-        path: "academicDepartment",
+        path: 'academicDepartment',
         populate: {
-            path: "academicFaculty",
+            path: 'academicFaculty',
         },
     });
     return result;
@@ -69,6 +176,7 @@ const updateStudentIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, f
             modifiedUpdatedData[`localGuardian.${key}`] = value;
         }
     }
+    console.log(modifiedUpdatedData);
     const result = yield student_model_1.Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
         new: true,
         runValidators: true,
@@ -81,11 +189,11 @@ const deleteStudentFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
         session.startTransaction();
         const deletedStudent = yield student_model_1.Student.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedStudent) {
-            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Failed to delete student");
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to delete student');
         }
         const deletedUser = yield user_model_1.User.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deletedUser) {
-            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Failed to delete user");
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to delete user');
         }
         yield session.commitTransaction();
         yield session.endSession();
@@ -94,7 +202,7 @@ const deleteStudentFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         yield session.abortTransaction();
         yield session.endSession();
-        throw new Error("Failed to delete student");
+        throw new Error('Failed to delete student');
     }
 });
 exports.StudentServices = {

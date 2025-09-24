@@ -5,7 +5,7 @@ const zod_1 = require("zod");
 const userValidationSchema = zod_1.z.object({
     pasword: zod_1.z
         .string()
-        .max(20, { message: 'Password can not be more than 20 characters' })
+        .max(20, { message: "Password can not be more than 20 characters" })
         .optional(),
 });
 exports.UserValidation = {

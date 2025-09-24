@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AcademicFacultyControllers = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const academicFaculty_service_1 = require("./academicFaculty.service");
-const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
-const sendResponse_1 = __importDefault(require("../../utility/sendResponse"));
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const createAcademicFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield academicFaculty_service_1.AcademicFacultyServices.createAcademicFacultyIntoDB(req.body);
     (0, sendResponse_1.default)(res, {

@@ -13,14 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_1 = __importDefault(require("http-status"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const configs_1 = __importDefault(require("../../configs"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const student_model_1 = require("../student/student.model");
 const academicSemester_model_1 = require("./../academicSemester/academicSemester.model");
 const user_model_1 = require("./user.model");
 const user_utils_1 = require("./user.utils");
-const configs_1 = __importDefault(require("../../configs"));
 const createStudentIntoDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
     // create a user object
     const userData = {};
@@ -31,7 +32,7 @@ const createStudentIntoDB = (password, payload) => __awaiter(void 0, void 0, voi
     // find academic semester info
     const admissionSemester = yield academicSemester_model_1.AcademicSemester.findById(payload.admissionSemester);
     if (!admissionSemester) {
-        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Admission semester not found");
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Admission Semester Not Found!");
     }
     const session = yield mongoose_1.default.startSession();
     try {
@@ -59,7 +60,7 @@ const createStudentIntoDB = (password, payload) => __awaiter(void 0, void 0, voi
     catch (err) {
         yield session.abortTransaction();
         yield session.endSession();
-        throw new Error("Failed to create student");
+        throw new Error(err);
     }
 });
 exports.UserServices = {
